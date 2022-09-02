@@ -105,9 +105,11 @@
     <!-- Animation   -->
     <script>
       (() => {
+        window.scrollTo(0, document.body.scrollHeight);
         window.setTimeout(() => {
           document.querySelector(".intro").style.display = "none";
           document.querySelector(".invite").style.display = "block";
+          window.scrollTo(0, 0);
         }, 16.5 * 1000);
       })();
     </script>
