@@ -14,10 +14,16 @@
   </head>
   <body>
     <section class="intro">
-      <p>When ladies give wedding presents it's soft.</p>
-      <p>There's tea. Crumpets. Sponge cakes.</p>
-      <p>But <strong>men</strong> go hard.</p>
-      <p>Men don't have time for a little shower.</p>
+      <p>
+        When ladies give wedding presents it's <span class="green">soft</span>.
+      </p>
+      <p>
+        There's <span class="pink">tea</span>.
+        <span class="white">Crumpets</span>.
+        <span class="green">Sponge cakes</span>.
+      </p>
+      <p>But men go <span class="orange">hard</span>.</p>
+      <p>Men don't have time for a <span class="pink">little shower</span>.</p>
       <p>Men storm the groom with a</p>
     </section>
     <section class="invite">
@@ -57,6 +63,85 @@
         </div>
         <button class="confirm">I'll Be There</button>
       </div>
+      <dialog id="form-modal">
+        <h2>Let us know you're coming.</h2>
+        <form id="book">
+          <div class="row">
+            <div class="form-control">
+              <label for="first-name">First Name</label>
+              <input
+                id="first-name"
+                type="text"
+                autocomplete="given-name"
+                name="firstName"
+                required
+              />
+            </div>
+            <div class="form-control">
+              <label for="last-name">Last Name</label>
+              <input
+                id="last-name"
+                type="text"
+                autocomplete="family-name"
+                name="lastName"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-control">
+            <label for="email">Email</label>
+            <input
+              required
+              id="email"
+              type="email"
+              autocomplete="email"
+              name="email"
+            />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </dialog>
     </section>
+    <!-- Animation   -->
+    <script>
+      (() => {
+        window.setTimeout(() => {
+          document.querySelector(".intro").style.display = "none";
+          document.querySelector(".invite").style.display = "block";
+        }, 18);
+      })();
+    </script>
+    <script>
+      (() => {
+        document.querySelector(".confirm").addEventListener("click", () => {
+          window.document.getElementById("form-modal").show();
+        });
+      })();
+    </script>
+    <script>
+      (() => {
+        document.querySelector("form").addEventListener("submit", (e) => {
+          e.preventDefault();
+          const firstName = e.target.firstName.value;
+          const lastName = e.target.lastName.value;
+          const email = e.target.email.value;
+
+          document.querySelector("form button").innerText = "Submitting...";
+          document.querySelector("form button").disabled = true;
+
+          fetch("/.netlify/functions/notify", {
+            method: "POST",
+            body: JSON.stringify({
+              firstName,
+              lastName,
+              email,
+            }),
+          }).then(() => {
+            document.querySelector("form").innerHTML =
+              "<p>Thanks for letting us know. Looking forward to storming Mitchell with you.</p>";
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
